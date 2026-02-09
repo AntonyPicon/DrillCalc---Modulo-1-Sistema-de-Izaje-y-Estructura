@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrillCalc - Sistema de Izaje (API 4F)</title>
+    <meta name="description" content="Calculadora de Ingeniería de Perforación para Sistemas de Izaje y Estructuras API 4F/9B.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="logo-area">
+                <svg class="drill-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 22H22L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M12 6V18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 14H16" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h1>DrillCalc <span class="module-tag">MOD. 1</span></h1>
+            </div>
+            <div class="header-info">
+                <span>API 4F / 9B Compliant</span>
+                <span class="status-indicator" id="api-status">API: Connecting...</span>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- INPUT SECTION -->
+            <section class="panel input-panel">
+                <h2><span class="icon">⚙️</span> Parámetros de Operación</h2>
+                <form id="calc-form">
+                    <div class="input-group">
+                        <label for="hook_load">Carga en el Gancho ($W_{hook}$)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="hook_load" name="hook_load" required min="0" step="100" placeholder="Ej: 250000">
+                            <span class="unit">lbs</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="lines">Líneas Guarnidas ($N$)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="lines" name="lines" required min="1" max="20" placeholder="Ej: 12">
+                            <span class="unit">lines</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="sheaves">Total Poleas ($S$)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="sheaves" name="sheaves" required min="1" max="30" placeholder="Ej: 15">
+                            <span class="unit">qty</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="friction_factor">Factor de Fricción ($K$)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="friction_factor" name="friction_factor" value="1.04" step="0.01" min="1.001">
+                            <span class="unit">factor</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="wire_strength">Resistencia Cable ($LB_{nom}$)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="wire_strength" name="wire_strength" required min="0" step="100" placeholder="Ej: 120000">
+                            <span class="unit">lbs</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">
+                        CALCULAR RESULTADOS
+                    </button>
+                    <div id="form-error" class="error-msg"></div>
+                </form>
+            </section>
+
+            <!-- RESULTS SECTION -->
+            <section class="panel results-panel">
+                <!-- Safety Card (Top Priority) -->
+                <div id="safety-card" class="card safety-card">
+                    <div class="safety-header">FACTOR DE SEGURIDAD (FD)</div>
+                    <div class="safety-value" id="fd-value">--</div>
+                    <div class="safety-status" id="fd-status">ESPERANDO DATOS</div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="card metric-card">
+                        <div class="metric-label">Eficiencia ($\eta$)</div>
+                        <div class="metric-value" id="efficiency-value">--</div>
+                        <div class="metric-unit">%</div>
+                    </div>
+                    
+                    <div class="card metric-card">
+                        <div class="metric-label">Tensión Línea Rápida</div>
+                        <div class="metric-value" id="fast-line-value">--</div>
+                        <div class="metric-unit">lbs</div>
+                    </div>
+
+                     <div class="card metric-card">
+                        <div class="metric-label">Carga Línea Muerta</div>
+                        <div class="metric-value" id="dead-line-value">--</div>
+                        <div class="metric-unit">lbs</div>
+                    </div>
+                </div>
+
+                <!-- Derrick Load Visualization -->
+                <div class="card derrick-card">
+                    <h3>Carga Total en la Torre ($F_{derrick}$)</h3>
+                    <div class="load-display">
+                        <span id="derrick-load-value" class="large-value">--</span> <span class="unit">lbs</span>
+                    </div>
+                    <div class="load-bar-container">
+                        <div class="load-bar-fill" id="load-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="load-legend">
+                       <small>Composición: Gancho + Rápida + Muerta</small>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

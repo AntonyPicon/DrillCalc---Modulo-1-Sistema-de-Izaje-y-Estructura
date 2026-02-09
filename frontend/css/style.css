@@ -1,0 +1,317 @@
+:root {
+    /* Color Palette - Industrial / Oil & Gas */
+    --bg-dark: #0f1115;
+    --panel-bg: #161920;
+    --panel-border: #2a2e38;
+    
+    --primary-accent: #d4b572; /* Beige/Gold Industrial */
+    --primary-hover: #e5ca8f;
+    
+    --text-main: #e0e0e0;
+    --text-muted: #8a93a0;
+    
+    /* Safety Colors */
+    --status-safe: #2ecc71;
+    --status-caution: #f1c40f;
+    --status-danger: #e74c3c;
+    
+    /* Fonts */
+    --font-heading: 'Chakra Petch', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+    
+    --transition-speed: 0.3s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    height: 100vh;
+    overflow: hidden; /* App-like feel */
+    display: flex;
+    justify-content: center;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+/* Header */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--panel-border);
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.drill-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--primary-accent);
+}
+
+h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.module-tag {
+    color: var(--primary-accent);
+    font-size: 1rem;
+    background: rgba(212, 181, 114, 0.15);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.header-info {
+    display: flex;
+    gap: 20px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        overflow-y: visible;
+    }
+    body { overflow: auto; }
+}
+
+/* Panels */
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.panel h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel h2 .icon { font-size: 1.4rem; }
+
+/* Input Form */
+.input-group { margin-bottom: 20px; }
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    padding-right: 12px;
+    transition: border-color var(--transition-speed);
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary-accent);
+}
+
+input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    outline: none;
+}
+
+.unit {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    user-select: none;
+}
+
+.btn-calculate {
+    width: 100%;
+    background: var(--primary-accent);
+    color: #1a1a1a;
+    border: none;
+    padding: 15px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.btn-calculate:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 181, 114, 0.3);
+}
+
+.btn-calculate:active {
+    transform: translateY(0);
+}
+
+.error-msg {
+    color: var(--status-danger);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    min-height: 20px;
+    text-align: center;
+}
+
+/* Results Panel */
+.results-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    padding: 20px;
+    border: 1px solid var(--panel-border);
+}
+
+/* Safety Card */
+.safety-card {
+    text-align: center;
+    padding: 30px;
+    transition: background-color 0.5s, border-color 0.5s;
+    border-width: 2px;
+}
+
+.safety-card.safe { border-color: var(--status-safe); background: rgba(46, 204, 113, 0.05); }
+.safety-card.caution { border-color: var(--status-caution); background: rgba(241, 196, 15, 0.05); }
+.safety-card.danger { border-color: var(--status-danger); background: rgba(231, 76, 60, 0.05); }
+
+.safety-header {
+    color: var(--text-muted);
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.safety-value {
+    font-size: 4rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    margin-bottom: 20px;
+}
+
+.safety-status {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 50px;
+    display: inline-block;
+    background: rgba(0,0,0,0.3);
+}
+
+.safe .safety-status { color: var(--status-safe); }
+.caution .safety-status { color: var(--status-caution); }
+.danger .safety-status { color: var(--status-danger); }
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.metric-card {
+    text-align: center;
+}
+
+.metric-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--primary-accent);
+}
+
+.metric-unit {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+/* Derrick Card */
+.derrick-card h3 {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: var(--text-main);
+}
+
+.large-value {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    color: var(--text-main);
+}
+
+.load-bar-container {
+    height: 12px;
+    background: #000;
+    border-radius: 6px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.load-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-accent), #fff);
+    transition: width 0.8s ease-out;
+}
+
+.load-legend {
+    color: var(--text-muted);
+}

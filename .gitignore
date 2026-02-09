@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+venv/
+.env
+
+# Tests
+.pytest_cache/
+
+# OS
+.DS_Store
+
+# Frontend
+node_modules/
