@@ -2,6 +2,7 @@
 
 **Autor:** Antony Picon, Ingeniero Mecánico.
 **Normativa:** API Spec 4F / API Spec 9B.
+**Documentación Base:** [DESARROLLO DEL MÓDULO 1_ EL SISTEMA DE IZAJE Y LA ESTRUCTURA.pdf](file:///home/antony/Escritorio/modulo%201%20%20EL%20SISTEMA%20DE%20IZAJE%20Y%20LA%20ESTRUCTURA/DESARROLLO%20DEL%20MÓDULO%201_%20EL%20SISTEMA%20DE%20IZAJE%20Y%20LA%20ESTRUCTURA.pdf)
 **Repositorio:** [https://github.com/AntonyPicon/DrillCalc---Modulo-1-Sistema-de-Izaje-y-Estructura.git](https://github.com/AntonyPicon/DrillCalc---Modulo-1-Sistema-de-Izaje-y-Estructura.git)
 
 ## Descripción
