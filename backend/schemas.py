@@ -26,3 +26,22 @@ class HoistingOutput(BaseModel):
     derrick_load: float = Field(..., description="Carga total en la torre (F_derrick) en libras.")
     safety_factor: float = Field(..., description="Factor de Diseño o Seguridad (FD).")
     alert_level: Literal["DANGER", "CAUTION", "SAFE"] = Field(..., description="Nivel de alerta basado en el Factor de Seguridad.")
+
+class TonMileInput(BaseModel):
+    """
+    Input model for Ton-Mile calculations (Round Trip).
+    Ref: API RP 9B
+    """
+    depth: float = Field(..., gt=0, description="Profundidad actual (D) en pies (ft).")
+    stand_length: float = Field(..., gt=0, description="Longitud del equipo/parada (L) en pies (ft).")
+    pipe_weight_mud: float = Field(..., gt=0, description="Peso nominal del tubo en lodo (Wp) en lbs/ft.")
+    block_weight: float = Field(..., gt=0, description="Peso del bloque (M) en lbs.")
+    collar_weight_mud: float = Field(..., gt=0, description="Peso de los lastrabarrenas en lodo (Wc) en lbs/ft.")
+    collar_length: float = Field(..., gt=0, description="Longitud de los lastrabarrenas (Lc) en pies (ft).")
+
+class TonMileOutput(BaseModel):
+    """
+    Output model for Ton-Mile calculation result.
+    """
+    ton_miles: float = Field(..., description="Toneladas-Milla calculadas para el viaje redondo.")
+

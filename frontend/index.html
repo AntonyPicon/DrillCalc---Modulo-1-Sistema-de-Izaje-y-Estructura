@@ -1,136 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DrillCalc - Sistema de Izaje (API 4F)</title>
-    <meta name="description" content="Calculadora de Ingeniería de Perforación para Sistemas de Izaje y Estructuras API 4F/9B.">
-    
+    <meta name="description"
+        content="Calculadora de Ingeniería de Perforación para Sistemas de Izaje y Estructuras API 4F/9B.">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="main-header">
+    <aside class="sidebar">
+        <div class="logo-container">
             <div class="logo-area">
                 <svg class="drill-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 22H22L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M12 6V18" stroke="currentColor" stroke-width="2"/>
-                    <path d="M8 14H16" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 2L2 22H22L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M12 6V18" stroke="currentColor" stroke-width="2" />
+                    <path d="M8 14H16" stroke="currentColor" stroke-width="2" />
                 </svg>
-                <h1>DrillCalc <span class="module-tag">MOD. 1</span></h1>
+                <h1 style="font-size: 1.2rem;">DrillCalc</h1>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active" data-view="hoisting-view">
+                <span class="nav-icon">🏗️</span>
+                <span>Sistema de Izaje</span>
+            </li>
+            <li class="nav-item" data-view="ton-mile-view">
+                <span class="nav-icon">⚖️</span>
+                <span>Ton-Mile</span>
+            </li>
+        </ul>
+        <div
+            style="padding: 20px; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--panel-border);">
+            API 4F / 9B Compliant<br>
+            v1.0.0
+        </div>
+    </aside>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header" style="border-bottom: none; padding-bottom: 0;">
+            <div class="logo-area">
+                <h1 id="current-view-title">SISTEMA DE IZAJE <span class="module-tag">MOD. 1</span></h1>
             </div>
             <div class="header-info">
-                <span>API 4F / 9B Compliant</span>
                 <span class="status-indicator" id="api-status">API: Connecting...</span>
             </div>
         </header>
 
-        <main class="dashboard-grid">
-            <!-- INPUT SECTION -->
-            <section class="panel input-panel">
-                <h2><span class="icon">⚙️</span> Parámetros de Operación</h2>
-                <form id="calc-form">
-                    <div class="input-group">
-                        <label for="hook_load">Carga en el Gancho ($W_{hook}$)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="hook_load" name="hook_load" required min="0" step="100" placeholder="Ej: 250000">
-                            <span class="unit">lbs</span>
+        <!-- VIEWS -->
+        <div id="hoisting-view" class="view active">
+            <main class="dashboard-grid">
+                <!-- INPUT SECTION -->
+                <section class="panel input-panel">
+                    <h2><span class="icon">⚙️</span> Parámetros de Operación</h2>
+                    <form id="calc-form">
+                        <div class="input-group">
+                            <label for="hook_load">Carga en el Gancho (Whook)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="hook_load" name="hook_load" required min="0" step="100"
+                                    placeholder="Ej: 250000">
+                                <span class="unit">lbs</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="lines">Líneas Guarnidas (N)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="lines" name="lines" required min="1" max="20"
+                                    placeholder="Ej: 12">
+                                <span class="unit">lines</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="sheaves">Total Poleas (S)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="sheaves" name="sheaves" required min="1" max="30"
+                                    placeholder="Ej: 15">
+                                <span class="unit">qty</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="friction_factor">Factor de Fricción (K)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="friction_factor" name="friction_factor" value="1.04"
+                                    step="0.01" min="1.001">
+                                <span class="unit">factor</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="wire_strength">Resistencia Cable (LBnom)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="wire_strength" name="wire_strength" required min="0" step="100"
+                                    placeholder="Ej: 120000">
+                                <span class="unit">lbs</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-calculate">
+                            CALCULAR RESULTADOS
+                        </button>
+                        <div id="form-error" class="error-msg"></div>
+                    </form>
+                </section>
+
+                <!-- RESULTS SECTION -->
+                <section class="panel results-panel">
+                    <!-- Safety Card -->
+                    <div id="safety-card" class="card safety-card">
+                        <div class="safety-header">FACTOR DE SEGURIDAD (FD)</div>
+                        <div class="safety-value" id="fd-value">--</div>
+                        <div class="safety-status" id="fd-status">ESPERANDO DATOS</div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="card metric-card">
+                            <div class="metric-label">Eficiencia (η)</div>
+                            <div class="metric-value" id="efficiency-value">--</div>
+                            <div class="metric-unit">%</div>
+                        </div>
+
+                        <div class="card metric-card">
+                            <div class="metric-label">Tensión Línea Rápida</div>
+                            <div class="metric-value" id="fast-line-value">--</div>
+                            <div class="metric-unit">lbs</div>
+                        </div>
+
+                        <div class="card metric-card">
+                            <div class="metric-label">Carga Línea Muerta</div>
+                            <div class="metric-value" id="dead-line-value">--</div>
+                            <div class="metric-unit">lbs</div>
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label for="lines">Líneas Guarnidas ($N$)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="lines" name="lines" required min="1" max="20" placeholder="Ej: 12">
-                            <span class="unit">lines</span>
+                    <!-- Derrick Load Visualization -->
+                    <div class="card derrick-card">
+                        <h3>Carga Total en la Torre (Fderrick)</h3>
+                        <div class="load-display">
+                            <span id="derrick-load-value" class="large-value">--</span> <span class="unit">lbs</span>
+                        </div>
+                        <div class="load-bar-container">
+                            <div class="load-bar-fill" id="load-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="load-legend">
+                            <small>Composición: Gancho + Rápida + Muerta</small>
                         </div>
                     </div>
+                </section>
+            </main>
+        </div>
 
-                    <div class="input-group">
-                        <label for="sheaves">Total Poleas ($S$)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="sheaves" name="sheaves" required min="1" max="30" placeholder="Ej: 15">
-                            <span class="unit">qty</span>
+        <!-- TON-MILE VIEW -->
+        <div id="ton-mile-view" class="view">
+            <main class="dashboard-grid">
+                <!-- INPUT SECTION -->
+                <section class="panel input-panel">
+                    <h2><span class="icon">⚖️</span> Ton-Mile Round Trip</h2>
+                    <form id="ton-mile-form">
+                        <div class="input-group">
+                            <label for="depth">Profundidad (D)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="depth" name="depth" required min="0" step="10"
+                                    placeholder="Ej: 10000">
+                                <span class="unit">ft</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="stand_length">Longitud Parada (L)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="stand_length" name="stand_length" required min="0" step="1"
+                                    placeholder="Ej: 90">
+                                <span class="unit">ft</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="pipe_weight_mud">Peso Tubería en Lodo (Wpm)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="pipe_weight_mud" name="pipe_weight_mud" required min="0"
+                                    step="0.1" placeholder="Ej: 19.5">
+                                <span class="unit">lbs/ft</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="block_weight">Peso del Bloque (M)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="block_weight" name="block_weight" required min="0" step="100"
+                                    placeholder="Ej: 15000">
+                                <span class="unit">lbs</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="collar_weight_mud">Peso Lastrabarrenas en Lodo (Wcm)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="collar_weight_mud" name="collar_weight_mud" required min="0"
+                                    step="0.1" placeholder="Ej: 100">
+                                <span class="unit">lbs/ft</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="collar_length">Longitud Lastrabarrenas (Lc)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="collar_length" name="collar_length" required min="0" step="1"
+                                    placeholder="Ej: 600">
+                                <span class="unit">ft</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-calculate">
+                            CALCULAR TON-MILES
+                        </button>
+                        <div id="ton-mile-form-error" class="error-msg"></div>
+                    </form>
+                </section>
+
+                <!-- RESULTS SECTION -->
+                <section class="panel results-panel">
+                    <div class="card safety-card safe">
+                        <div class="safety-header">RESULTADO TON-MILE</div>
+                        <div class="safety-value" id="ton-mile-value" style="font-size: 5rem;">--</div>
+                        <div class="safety-status">TRIP ROUND (T<sub>R</sub>)</div>
+                    </div>
+
+                    <div class="card metric-card" style="text-align: left;">
+                        <h3>Información de Referencia</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-top: 10px;">
+                            Este cálculo utiliza la formula estandar de la norma <strong>API RP 9B</strong> para viajes
+                            redondos (Round Trips).
+                            Las toneladas-milla representan el trabajo acumulado realizado por el cable de perforación.
+                        </p>
+                        <div
+                            style="margin-top: 20px; font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px;">
+                            T<sub>R</sub> = [D(L+D)W<sub>m</sub> + 4D(M + 0.5C)] / 10,560,000
                         </div>
                     </div>
-
-                    <div class="input-group">
-                        <label for="friction_factor">Factor de Fricción ($K$)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="friction_factor" name="friction_factor" value="1.04" step="0.01" min="1.001">
-                            <span class="unit">factor</span>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="wire_strength">Resistencia Cable ($LB_{nom}$)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="wire_strength" name="wire_strength" required min="0" step="100" placeholder="Ej: 120000">
-                            <span class="unit">lbs</span>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn-calculate">
-                        CALCULAR RESULTADOS
-                    </button>
-                    <div id="form-error" class="error-msg"></div>
-                </form>
-            </section>
-
-            <!-- RESULTS SECTION -->
-            <section class="panel results-panel">
-                <!-- Safety Card (Top Priority) -->
-                <div id="safety-card" class="card safety-card">
-                    <div class="safety-header">FACTOR DE SEGURIDAD (FD)</div>
-                    <div class="safety-value" id="fd-value">--</div>
-                    <div class="safety-status" id="fd-status">ESPERANDO DATOS</div>
-                </div>
-
-                <!-- Metrics Grid -->
-                <div class="metrics-grid">
-                    <div class="card metric-card">
-                        <div class="metric-label">Eficiencia ($\eta$)</div>
-                        <div class="metric-value" id="efficiency-value">--</div>
-                        <div class="metric-unit">%</div>
-                    </div>
-                    
-                    <div class="card metric-card">
-                        <div class="metric-label">Tensión Línea Rápida</div>
-                        <div class="metric-value" id="fast-line-value">--</div>
-                        <div class="metric-unit">lbs</div>
-                    </div>
-
-                     <div class="card metric-card">
-                        <div class="metric-label">Carga Línea Muerta</div>
-                        <div class="metric-value" id="dead-line-value">--</div>
-                        <div class="metric-unit">lbs</div>
-                    </div>
-                </div>
-
-                <!-- Derrick Load Visualization -->
-                <div class="card derrick-card">
-                    <h3>Carga Total en la Torre ($F_{derrick}$)</h3>
-                    <div class="load-display">
-                        <span id="derrick-load-value" class="large-value">--</span> <span class="unit">lbs</span>
-                    </div>
-                    <div class="load-bar-container">
-                        <div class="load-bar-fill" id="load-bar" style="width: 0%"></div>
-                    </div>
-                    <div class="load-legend">
-                       <small>Composición: Gancho + Rápida + Muerta</small>
-                    </div>
-                </div>
-            </section>
-        </main>
+                </section>
+            </main>
+        </div>
     </div>
-
     <!-- Scripts -->
     <script type="module" src="js/app.js"></script>
 </body>
+
 </html>

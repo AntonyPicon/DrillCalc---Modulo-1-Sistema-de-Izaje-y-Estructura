@@ -5,6 +5,8 @@ Description: Main entry point for the FastAPI application.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 from backend.routers import module_1
 
 app = FastAPI(
@@ -14,11 +16,7 @@ app = FastAPI(
 )
 
 # CORS Configuration
-origins = [
-    "*", # Allow all for development simplicity as requested ("Full Stack")
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,12 +26,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Routers
+# 1. Include API Routers FIRST
 app.include_router(module_1.router)
 
-@app.get("/")
-async def root():
-    return {"message": "DrillCalc API is running. Visit /docs for Swagger UI."}
+# 2. Serve Frontend Static Files LAST (at root)
+frontend_path = os.path.join(os.getcwd(), "frontend")
+if os.path.exists(frontend_path):
+    app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+else:
+    @app.get("/")
+    async def root():
+        return {"message": "DrillCalc API is running. Frontend directory not found."}
+
+
 
 if __name__ == "__main__":
     import uvicorn

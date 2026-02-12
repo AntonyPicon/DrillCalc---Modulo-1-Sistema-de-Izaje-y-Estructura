@@ -63,23 +63,54 @@ export class UiRenderer {
         const element = document.getElementById('derrick-load-value');
         element.textContent = this.formatNumber(data.derrick_load, 0);
 
-        // Simple visual bar animation based on an arbitrary max load (e.g. 2,000,000 lbs ?) 
-        // In a real app we might compare against Rig Capacity (not yet in input).
-        // For now, we just fill it to look cool/alive.
         const bar = document.getElementById('load-bar');
 
         // Reset to trigger animation
         bar.style.width = '0%';
         setTimeout(() => {
-            bar.style.width = '75%'; // Static visual or dynamic if we knew capacity
+            bar.style.width = '75%';
         }, 100);
     }
 
-    clearErrors() {
-        document.getElementById('form-error').textContent = '';
+    updateTonMileResult(tonMiles) {
+        const element = document.getElementById('ton-mile-value');
+        element.textContent = this.formatNumber(tonMiles, 2);
+
+        // Add a small bounce animation
+        element.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            element.style.transform = 'scale(1)';
+        }, 200);
     }
 
-    showError(msg) {
-        document.getElementById('form-error').textContent = `⚠️ ${msg}`;
+    switchView(viewId, title) {
+        // Toggle view containers
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+
+        // Toggle nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if (item.getAttribute('data-view') === viewId) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+
+        // Update header title
+        document.getElementById('current-view-title').innerHTML = `${title.toUpperCase()} <span class="module-tag">MOD. 1</span>`;
+    }
+
+    clearErrors(formType = 'hoisting') {
+        const errorId = formType === 'hoisting' ? 'form-error' : 'ton-mile-form-error';
+        const el = document.getElementById(errorId);
+        if (el) el.textContent = '';
+    }
+
+    showError(msg, formType = 'hoisting') {
+        const errorId = formType === 'hoisting' ? 'form-error' : 'ton-mile-form-error';
+        const el = document.getElementById(errorId);
+        if (el) el.textContent = `⚠️ ${msg}`;
     }
 }
+

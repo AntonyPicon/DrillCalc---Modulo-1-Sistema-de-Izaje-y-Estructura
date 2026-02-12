@@ -18,14 +18,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusEl.style.color = 'var(--status-danger)';
     }
 
-    // Handle Form Submit
-    const form = document.getElementById('calc-form');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        ui.clearErrors();
+    // Handle Navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const viewId = item.getAttribute('data-view');
+            const title = item.querySelector('span:not(.nav-icon)').textContent;
+            ui.switchView(viewId, title);
+        });
+    });
 
-        // Gather Data
-        const formData = new FormData(form);
+    // Handle Hoisting Form Submit
+    const hoistingForm = document.getElementById('calc-form');
+    hoistingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        ui.clearErrors('hoisting');
+
+        const formData = new FormData(hoistingForm);
         const inputData = {
             hook_load: parseFloat(formData.get('hook_load')),
             lines: parseInt(formData.get('lines')),
@@ -34,19 +42,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             wire_strength: parseFloat(formData.get('wire_strength'))
         };
 
-        // BasicClientSideValidation can happen here, but Schema handles it too.
-
         try {
             const results = await api.calculateHoisting(inputData);
-            console.log('Results:', results);
-
-            // Render Results
             ui.updateSafetyCard(results.safety_factor, results.alert_level);
             ui.updateMetrics(results);
             ui.updateDerrickLoad(results);
-
         } catch (error) {
-            ui.showError(error.message);
+            ui.showError(error.message, 'hoisting');
+        }
+    });
+
+    // Handle Ton-Mile Form Submit
+    const tonMileForm = document.getElementById('ton-mile-form');
+    tonMileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        ui.clearErrors('ton-mile');
+
+        const formData = new FormData(tonMileForm);
+        const inputData = {
+            depth: parseFloat(formData.get('depth')),
+            stand_length: parseFloat(formData.get('stand_length')),
+            pipe_weight_mud: parseFloat(formData.get('pipe_weight_mud')),
+            block_weight: parseFloat(formData.get('block_weight')),
+            collar_weight_mud: parseFloat(formData.get('collar_weight_mud')),
+            collar_length: parseFloat(formData.get('collar_length'))
+        };
+
+        try {
+            const results = await api.calculateTonMile(inputData);
+            ui.updateTonMileResult(results.ton_miles);
+        } catch (error) {
+            ui.showError(error.message, 'ton-mile');
         }
     });
 });
+

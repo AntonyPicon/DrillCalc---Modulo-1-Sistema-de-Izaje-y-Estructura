@@ -4,8 +4,9 @@ Author: Antony Picon, Mechanical Engineer
 Description: Router definitions for Hoisting System calculations.
 """
 from fastapi import APIRouter, HTTPException
-from backend.schemas import HoistingInput, HoistingOutput
+from backend.schemas import HoistingInput, HoistingOutput, TonMileInput, TonMileOutput
 from backend.services.hoisting_engine import HoistingEngine
+from backend.services.ton_mile_engine import TonMileEngine
 
 router = APIRouter(prefix="/module-1", tags=["Module 1: Hoisting & Structure"])
 
@@ -16,11 +17,6 @@ async def calculate_hoisting_system(data: HoistingInput):
     """
     try:
         # 1. Calculate Efficiency
-        # Note: API 4F usually assumes N lines string-up.
-        # N = data.lines
-        # S = data.sheaves
-        # K = data.friction_factor
-         
         efficiency = HoistingEngine.calculate_efficiency(data.lines, data.sheaves, data.friction_factor)
 
         # 2. Calculate Fast Line Tension
@@ -51,3 +47,22 @@ async def calculate_hoisting_system(data: HoistingInput):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error during calculation.")
+
+@router.post("/calculate-ton-mile", response_model=TonMileOutput)
+async def calculate_ton_mile(data: TonMileInput):
+    """
+    Calculates Ton-Miles for a Round Trip based on API RP 9B.
+    """
+    try:
+        ton_miles = TonMileEngine.calculate_round_trip(
+            depth=data.depth,
+            stand_length=data.stand_length,
+            pipe_weight_mud=data.pipe_weight_mud,
+            block_weight=data.block_weight,
+            collar_weight_mud=data.collar_weight_mud,
+            collar_length=data.collar_length
+        )
+        return TonMileOutput(ton_miles=ton_miles)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error calculating Ton-Mile: {str(e)}")
+

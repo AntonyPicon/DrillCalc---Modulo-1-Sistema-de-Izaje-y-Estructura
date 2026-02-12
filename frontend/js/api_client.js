@@ -8,9 +8,10 @@
  * Handles communication with the FastAPI backend.
  */
 export class ApiClient {
-    constructor(baseUrl = 'http://localhost:8000') {
+    constructor(baseUrl = window.location.origin) {
         this.baseUrl = baseUrl;
     }
+
 
     /**
      * Sends calculation request to the backend.
@@ -42,6 +43,38 @@ export class ApiClient {
             throw error;
         }
     }
+
+    /**
+     * Sends Ton-Mile calculation request to the backend.
+     * @param {Object} inputData 
+     * @returns {Promise<Object>}
+     */
+    async calculateTonMile(inputData) {
+        const url = `${this.baseUrl}/module-1/calculate-ton-mile`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(inputData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Error en el cálculo de Ton-Mile');
+            }
+
+            return await response.json();
+
+        } catch (error) {
+            console.error('Ton-Mile API Error:', error);
+            throw error;
+        }
+    }
+
 
     /**
      * Checks if the API is reachable.

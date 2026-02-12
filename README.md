@@ -1,54 +1,54 @@
 # DrillCalc - Modulo 1: Sistema de Izaje y Estructura
 
 **Autor:** Antony Picon, Ingeniero Mecánico.
-**Normativa:** API Spec 4F / API Spec 9B.
-**Documentación Base:** [DESARROLLO DEL MÓDULO 1_ EL SISTEMA DE IZAJE Y LA ESTRUCTURA.pdf](file:///home/antony/Escritorio/modulo%201%20%20EL%20SISTEMA%20DE%20IZAJE%20Y%20LA%20ESTRUCTURA/DESARROLLO%20DEL%20MÓDULO%201_%20EL%20SISTEMA%20DE%20IZAJE%20Y%20LA%20ESTRUCTURA.pdf)
+**Normativa:** API Spec 4F / API Spec 9B (RP 9B).
+**Documentación Base:** [DESARROLLO DEL MÓDULO 1_ EL SISTEMA DE IZAJE Y LA ESTRUCTURA.pdf](DESARROLLO%20DEL%20MÓDULO%201_%20EL%20SISTEMA%20DE%20IZAJE%20Y%20LA%20ESTRUCTURA.pdf)
 **Repositorio:** [https://github.com/AntonyPicon/DrillCalc---Modulo-1-Sistema-de-Izaje-y-Estructura.git](https://github.com/AntonyPicon/DrillCalc---Modulo-1-Sistema-de-Izaje-y-Estructura.git)
 
 ## Descripción
-DrillCalc es una herramienta modular diseñada para el cálculo y verificación de parámetros críticos en el Sistema de Izaje y la Estructura de taladros de perforación. Este primer módulo se enfoca en la eficiencia del sistema, tensiones en las líneas (rápida/muerta), carga en la torre y factores de diseño.
+DrillCalc es una herramienta modular avanzada diseñada para el cálculo y verificación de parámetros críticos en el Sistema de Izaje y la Estructura de taladros de perforación. Este primer módulo integra el cálculo de eficiencia, tensiones en las líneas, carga en la torre y el cálculo de **Ton-Miles (Toneladas-Milla)**.
 
 ## Características
-- **Backend Robusto**: Implementado en Python con FastAPI, siguiendo patrones de arquitectura limpia y separación de lógica de negocio (Service Layer).
-- **Frontend Industrial**: Interfaz web moderna (Dark Mode) con visualización de alertas de seguridad basadas en rangos técnicos (Verde/Amarillo/Rojo).
-- **Validación Rigurosa**: Modelos de datos validados con Pydantic y lógica de ingeniería verificada mediante pruebas unitarias.
+- **Backend Unificado**: Implementado con FastAPI, sirve tanto la lógica de ingeniería como los archivos estáticos de la interfaz.
+- **Módulo de Ton-Mile**: Cálculo de trabajo acumulado (TR - Round Trip) basado en la norma API RP 9B.
+- **Navegación Intuitiva**: Sidebar lateral para alternar entre el Sistema de Izaje y Ton-Mile.
+- **Frontend Industrial**: Interfaz moderna (Dark Mode) con alertas visuales de seguridad (Verde/Amarillo/Rojo).
 
 ## Requisitos
 - Python 3.10 o superior.
-- Navegador web moderno (Chrome, Edge, Firefox).
+- Navegador web moderno.
 
 ## Instalación y Ejecución
 
 ### 1. Preparar el Entorno
 ```bash
-# Clone the repository
+# clonar el repositorio
 git clone https://github.com/AntonyPicon/DrillCalc---Modulo-1-Sistema-de-Izaje-y-Estructura.git
 cd DrillCalc---Modulo-1-Sistema-de-Izaje-y-Estructura
 
-# Crear entorno virtual
+# Crear y activar entorno virtual
 python -m venv venv
-
-# Activar (Linux/Mac)
-source venv/bin/activate
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate   # Windows
 
 # Instalar dependencias
 pip install -r requirements.txt
 ```
 
-### 2. Ejecutar el Servidor (Backend)
+### 2. Ejecutar la Aplicación
 ```bash
-uvicorn backend.main:app --reload
+python -m backend.main
 ```
-La API estará disponible en `http://localhost:8000`. Puedes consultar la documentación interactiva en `/docs`.
+Una vez iniciado el servidor, accede a:
+👉 **[http://localhost:8000](http://localhost:8000)**
 
-### 3. Ejecutar la Interfaz (Frontend)
-Simplemente abre el archivo `frontend/index.html` en tu navegador o sírvelo con una herramienta como `http.server`.
+La documentación de la API está disponible en `http://localhost:8000/docs`.
 
 ## Pruebas
-Para ejecutar la suite de pruebas unitarias e integración:
 ```bash
 PYTHONPATH=. pytest tests/
 ```
 
 ## Licencia
-Este proyecto está bajo la Licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la Licencia **MIT**.
+
